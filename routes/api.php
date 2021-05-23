@@ -1,12 +1,11 @@
 <?php
 
-use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\ToDoController;
 use App\Http\Controllers\UserController;
 use App\Http\Controllers\Auth\RegisterController;
-use App\Http\Controllers\Auth\LoginController;
-use Illuminate\Support\Facades\Auth;
+use App\Http\Controllers\AuthController;
+
 
 /*
 |--------------------------------------------------------------------------
@@ -18,10 +17,6 @@ use Illuminate\Support\Facades\Auth;
 | is assigned the "api" middleware group. Enjoy building your API!
 |
 */
-
-Route::middleware('auth:api')->get('/user', function (Request $request) {
-    return $request->user();
-});
 
 // Endpoint for handle ToDos
 Route::group(['middleware' => 'auth:api'], function() {
@@ -41,11 +36,11 @@ Route::group(['middleware' => 'auth:api'], function() {
     Route::delete('users/{user}',  [UserController::class, 'delete']);
 });
 
-// Register user
-Route::post('register', [RegisterController::class, 'register']);
-
-// Login user
-Route::post('login', [LoginController::class, 'login']);
-
-// Logut user
-Route::post('logout', [LoginController::class, 'logout']);
+// Authentication
+Route::middleware(['api'])->group(function () {
+    Route::post('register', [RegisterController::class, 'register']);
+    Route::post('login', [AuthController::class, 'login']);
+    Route::post('logout',  [AuthController::class, 'logout']);
+    Route::post('refresh', [AuthController::class, 'refresh']);
+    Route::get('me', [AuthController::class, 'me']);
+});

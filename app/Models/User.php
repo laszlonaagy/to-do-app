@@ -8,9 +8,10 @@ use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Notifications\Notifiable;
 use Illuminate\Contracts\Auth\Access\Authorizable;
 use Spatie\Permission\Traits\HasRoles;
-use Illuminate\Support\Str;
+use Illuminate\Support\Facades\Hash;
+use Tymon\JWTAuth\Contracts\JWTSubject;
 
-class User extends Authenticatable
+class User extends Authenticatable implements JWTSubject
 {
     use HasFactory, Notifiable, HasRoles;
 
@@ -52,11 +53,23 @@ class User extends Authenticatable
         return $this->hasMany(ToDo::class);
     }
 
-    public function generateToken()
+    /**
+     * @inheritDoc
+     */
+    public function getJWTIdentifier()
     {
-        $this->api_token = Str::random(20);;
-        $this->save();
+        return $this->getKey();
+    }
 
-        return $this->api_token;
+    /**
+     * @inheritDoc
+     */
+    public function getJWTCustomClaims()
+    {
+        return [];
+    }
+
+    public function setPasswordAttribute($value) {
+        $this->attributes['password'] = Hash::make($value);
     }
 }
