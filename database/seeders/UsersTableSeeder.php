@@ -30,10 +30,7 @@ class UsersTableSeeder extends Seeder
             'name' => 'Administrator',
             'email' => 'admin@test.com',
             'password' => $password,
-            'email_verified_at' => 1621678080,
-            'api_token' => 'token',
-            'remember_token' => 'remembertoken',
-            'image' => asset('assets/images/admin.png')
+            'image_path' => asset('assets/images/admin.png')
         ]);
 
         // And now let's generate a few dozen users for our app:
@@ -42,10 +39,7 @@ class UsersTableSeeder extends Seeder
                 'name' => $faker->name,
                 'email' => $faker->email,
                 'password' => $password,
-                'email_verified_at' => $faker->datetime,
-                'api_token' => $faker->sentence,
-                'remember_token' => $faker->sentence,
-                'image' => $faker->imageUrl($width = 640, $height = 480)
+                'image_path' => $faker->imageUrl($width = 640, $height = 480)
             ]);
         }
     }
