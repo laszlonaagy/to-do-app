@@ -24,7 +24,7 @@ class User extends Authenticatable implements JWTSubject
         'name',
         'email',
         'password',
-        'image'
+        'image_path'
     ];
 
     /**
@@ -49,7 +49,7 @@ class User extends Authenticatable implements JWTSubject
     /**
      * Get to-do of the user.
      */
-    public function ToDo()
+    public function todos()
     {
         return $this->hasMany(ToDo::class);
     }

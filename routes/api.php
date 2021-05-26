@@ -5,6 +5,8 @@ use App\Http\Controllers\ToDoController;
 use App\Http\Controllers\UserController;
 use App\Http\Controllers\Auth\RegisterController;
 use App\Http\Controllers\AuthController;
+use App\Http\Controllers\FileUploadController;
+use App\Http\Controllers\PriorityController;
 
 
 /*
@@ -25,6 +27,8 @@ Route::group(['middleware' => 'api'], function() {
     Route::post('todos', [ToDoController::class, 'store']);
     Route::put('todos/{todo}', [ToDoController::class, 'update']);
     Route::delete('todos/{todo}', [ToDoController::class, 'delete']);
+    Route::get('userTodos/{user_id}', [ToDoController::class, 'userTodos']);
+    Route::get('priorities', [PriorityController::class, 'index']);
 });
 
 // Endpoint for handle Users
@@ -34,6 +38,8 @@ Route::group(['middleware' => 'api'], function() {
     Route::post('users',  [UserController::class, 'store']);
     Route::put('users/{user}',  [UserController::class, 'update']);
     Route::delete('users/{user}',  [UserController::class, 'delete']);
+    Route::post('user-image-upload', [FileUploadController::class, 'imageUpload']);
+    Route::get('user-image-download/{file_name}', [FileUploadController::class, 'getImage']);
 });
 
 // Authentication
@@ -63,4 +69,6 @@ Route::middleware(['cors'])->group(function () {
     Route::post('todos', [ToDoController::class, 'store']);
     Route::put('todos/{todo}', [ToDoController::class, 'update']);
     Route::delete('todos/{todo}', [ToDoController::class, 'delete']);
+
+    Route::get('priorities', [PriorityController::class, 'index']);
 });

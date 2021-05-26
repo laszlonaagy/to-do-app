@@ -6,9 +6,11 @@ use App\ApiCode;
 
 class AuthController extends Controller
 {
+    
+ 
     public function __construct()
     {
-        $this->middleware('auth:api', ['except' => ['login']]);
+        $this->middleware('auth:api', ['except' => ['login','refresh']]);
     }
 
     public function login() {
@@ -37,10 +39,12 @@ class AuthController extends Controller
 
 
     public function refresh() {
+        
         return $this->respondWithToken(auth()->refresh());
     }
 
     public function me() {
         return $this->respond(auth()->user());
     }
+
 }

@@ -33,4 +33,14 @@ class ToDo extends Model
     protected $casts = [
         'deadline' => 'datetime',
     ];
+
+    public function users()
+    {
+        return $this->belongsTo(User::class);
+    }
+
+    public function priority()
+    {
+        return $this->belongsTo(Priority::class);
+    }
 }

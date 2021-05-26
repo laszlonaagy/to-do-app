@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
 use App\Models\ToDo;
+use DB;
 
 class ToDoController extends Controller
 {
@@ -36,5 +37,22 @@ class ToDoController extends Controller
         $todo->delete();
 
         return response()->json(null, 204);
+    }
+
+    public function userTodos($user_id)
+    {
+
+        $todos = DB::table('users')
+            ->join('to_dos', 'users.id', '=', 'to_dos.user_id')
+            ->join('priorities', 'to_dos.priority_value', '=', 'priorities.priority_value')
+            ->select('to_dos.id', 'to_dos.title', 'to_dos.description', 'to_dos.deadline', 'to_dos.attachment', 'priorities.name as priority_value')
+            ->where( 'users.id', $user_id)
+            ->orderBy('priorities.priority_value','desc')
+            ->orderBy('to_dos.deadline','desc')
+            ->get();
+
+      //  $todos = User::with('todos')->find($user_id);
+
+        return response()->json($todos,200);
     }
 }
